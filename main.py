@@ -33,9 +33,9 @@ class GroupBox(QWidget):
 		b4 = QPushButton("1.4 Blending")
 
 		b1.clicked.connect(q1.load_image)
-		# b2.clicked.connect(func1.say_hello)
-		# b3.clicked.connect(func1.say_hello)
-		# b4.clicked.connect(func1.say_hello)
+		b2.clicked.connect(q1.color_seperation)
+		b3.clicked.connect(q1.image_flipping)
+		b4.clicked.connect(q1.blending)
 		
 		vbox.addWidget(b1)
 		vbox.addWidget(b2)
