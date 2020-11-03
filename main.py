@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import *
 from PyQt5 import QtCore
-import q1, q2, q3
+import q1, q2, q3, q4
 import sys
 
 class GroupBox(QWidget):
@@ -86,12 +86,21 @@ class GroupBox(QWidget):
 		groupbox = QGroupBox(title)
 		vbox = QVBoxLayout()
 		groupbox.setLayout(vbox)
-		r1 = self.get_c4_row("Rotation:", "deg")
-		r2 = self.get_c4_row("Scaling: ", "")
-		r3 = self.get_c4_row("Tx:      ", "pixel")
-		r4 = self.get_c4_row("Ty:      ", "pixel")
+
+		E1 = QLineEdit()
+		E2 = QLineEdit()
+		E3 = QLineEdit()
+		E4 = QLineEdit()
+
+
+		r1 = self.get_c4_row("Rotation:", "deg", E1)
+		r2 = self.get_c4_row("Scaling: ", "", E2)
+		r3 = self.get_c4_row("Tx:      ", "pixel", E3)
+		r4 = self.get_c4_row("Ty:      ", "pixel", E4)
 
 		b1 = QPushButton("Transformation")
+
+		b1.clicked.connect(lambda: q4.transform(E1.text(), E2.text(), E3.text(), E4.text()))
 
 		vbox.addWidget(r1)
 		vbox.addWidget(r2)
@@ -101,13 +110,12 @@ class GroupBox(QWidget):
 		return groupbox
 		
 
-	def get_c4_row(self, t1, t2):
+	def get_c4_row(self, t1, t2, E1):
 		groupbox = QGroupBox()
 		sub_layout = QGridLayout()
 		groupbox.setLayout(sub_layout)
 
 		L1 = QLabel(t1)
-		E1 = QLineEdit()
 		L2 = QLabel(t2)
 
 		E1.setFixedWidth(160)
