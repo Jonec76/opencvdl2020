@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import *
 from PyQt5 import QtCore
-import q1
+import q1, q2
 import sys
 
 class GroupBox(QWidget):
@@ -52,6 +52,10 @@ class GroupBox(QWidget):
 		b2 = QPushButton("2.2 Gaussian Blur")
 		b3 = QPushButton("2.3 Bilateral Filter")
 		
+		b1.clicked.connect(q2.median_filter)
+		b2.clicked.connect(q2.gaussian_blur)
+		b3.clicked.connect(q2.bilateral_filter)
+
 		vbox.addWidget(b1)
 		vbox.addWidget(b2)
 		vbox.addWidget(b3)
