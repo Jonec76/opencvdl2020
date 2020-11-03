@@ -1,5 +1,6 @@
 from PyQt5.QtWidgets import *
 from PyQt5 import QtCore
+import q1
 import sys
 
 class GroupBox(QWidget):
@@ -31,6 +32,11 @@ class GroupBox(QWidget):
 		b3 = QPushButton("1.3 Image Flipping")
 		b4 = QPushButton("1.4 Blending")
 
+		b1.clicked.connect(q1.load_image)
+		# b2.clicked.connect(func1.say_hello)
+		# b3.clicked.connect(func1.say_hello)
+		# b4.clicked.connect(func1.say_hello)
+		
 		vbox.addWidget(b1)
 		vbox.addWidget(b2)
 		vbox.addWidget(b3)
