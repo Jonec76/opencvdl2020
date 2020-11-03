@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import *
 from PyQt5 import QtCore
-import q1, q2
+import q1, q2, q3
 import sys
 
 class GroupBox(QWidget):
@@ -70,6 +70,11 @@ class GroupBox(QWidget):
 		b2 = QPushButton("3.2 Sobel X")
 		b3 = QPushButton("3.3 Sobel Y")
 		b4 = QPushButton("3.4 Magnitude")
+
+		b1.clicked.connect(q3.gaussian_blur)
+		b2.clicked.connect(q3.sobel_x)
+		b3.clicked.connect(q3.sobel_y)
+		b4.clicked.connect(q3.magnitude)
 
 		vbox.addWidget(b1)
 		vbox.addWidget(b2)
