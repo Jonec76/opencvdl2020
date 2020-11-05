@@ -14,8 +14,10 @@ def transform(t1, t2, t3, t4):
         scaling = float(t2)
         tx = float(t3)
         ty = float(t4)
-        M = cv2.getRotationMatrix2D((tx, ty), rotation, scaling)
-        new_img = cv2.warpAffine(img, M, (1000, 1000))
+        T = np.float32([[1, 0, tx],[0, 1, ty]])
+        R = cv2.getRotationMatrix2D((tx, ty), rotation, scaling)
+        img = cv2.warpAffine(img, T, (1000, 1000))
+        new_img = cv2.warpAffine(img, R, (1000, 1000))
         cv2.imshow("output", new_img)  
     except ValueError:
         # Handle the exception
