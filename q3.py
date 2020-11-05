@@ -3,6 +3,8 @@ import numpy as np
 from math import sqrt
 
 img_prefix = 'Dataset_opencvdl/Q3_Image/'
+x_kernel = [[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]]
+y_kernel = [[1, 2, 1], [0, 0, 0], [-1, -2, -1]]
 
 def get_gaussian_blur_img():
     img = cv2.imread(img_prefix + 'Chihiro.jpg', 0)
@@ -35,7 +37,7 @@ def gaussian_blur():
     print("Wait for the Gaussian convolution ...")
     img = get_gaussian_blur_img()
     cv2.imshow("image", img)
-    print("Finish calculating ... ")
+    print("Finish calculating ... \n")
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
@@ -68,38 +70,32 @@ def get_sobel_img(kernel):
 
 def sobel_x():
     print("Wait for the sobel_x convolution ...")
-    x_kernel = [[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]]
     img = get_sobel_img(x_kernel)
     cv2.imshow("image", img)
-    print("Finish calculating ... ")
+    print("Finish calculating ... \n")
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
 def sobel_y():
     print("Wait for the sobel_y convolution ...")
-    y_kernel = [[1, 2, 1], [0, 0, 0], [-1, -2, -1]]
     img = get_sobel_img(y_kernel)
     cv2.imshow("image", img)
-    print("Finish calculating ... ")
+    print("Finish calculating ... \n")
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
-
-
 def magnitude():
-    x_kernel = [[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]]
-    y_kernel = [[1, 2, 1], [0, 0, 0], [-1, -2, -1]]
-
-    print("Wait for the sobel_x convolution ...")
+    print("[0/2] Wait for the sobel_x convolution ...")
     sobel_img_x = get_sobel_img(x_kernel)
-    print("Finish calculating ... ")
+    print("      Finish calculating ... \n")
 
-    print("Wait for the sobel_y convolution ...")
+    print("[1/2] Wait for the sobel_y convolution ...")
     sobel_img_y = get_sobel_img(y_kernel)
-    print("Finish calculating ... ")
+    print("      Finish calculating ... \n")
 
     width = sobel_img_x.shape[0]
     height = sobel_img_x.shape[1]
+    print("[2/2] Wait for magnitude calculating ...")
 
     new_img = np.zeros((width, height), dtype=np.uint8)
     for i in range(width):
@@ -107,6 +103,6 @@ def magnitude():
             new_img[i][j] = sqrt(sobel_img_x[i][j]**2 + sobel_img_y[i][j]**2)
     
     cv2.imshow("image", new_img)
-    print("Finish calculating ... ")
+    print("      Finish calculating ... \n")
     cv2.waitKey(0)
     cv2.destroyAllWindows()
