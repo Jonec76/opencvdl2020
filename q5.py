@@ -5,11 +5,19 @@ import pickle
 import matplotlib.pyplot as plt
 import random
 import vgg16
-import load
 from torchsummary import summary
+import torch
+import torchvision
+
 
 classes = ['plane', 'car', 'bird', 'cat',
         'deer', 'dog', 'frog', 'horse', 'ship', 'truck']
+
+def show_params():
+    batch_size, lr = vgg16.get_params()
+    print("Batch size: %d" % batch_size)
+    print("Learning rate: %f" % lr)
+    print("Optimizer: SGD")
 
 def load_file(filename):
     with open(filename, 'rb') as fo:
@@ -17,7 +25,7 @@ def load_file(filename):
     return data
 
 def show_train_image():
-    data = load_file('./cifar-10-batches-py/data_batch_1')
+    data = load_file('./data/cifar-10-batches-py/data_batch_1')
     image_data = data['data']
     labels = data['labels']
     label_count = len(labels)
@@ -27,7 +35,7 @@ def show_train_image():
 
 
     for i in range(2, 6):
-        batch_path = './cifar-10-batches-py/data_batch_' + str(i)
+        batch_path = './data/cifar-10-batches-py/data_batch_' + str(i)
         data = load_file(batch_path)
         image_data = data['data']
         new_labels = data['labels']
@@ -60,6 +68,50 @@ def show_model_structure():
     model = vgg16.load_model()
     summary(model, (3, 32, 32))
 
-def show_model_structure():
+def test_image(index):
+    try:
+        index = int(index)
+    except ValueError:
+        # Handle the exception
+        print('Please enter an integer')
+        return 
+    if index < 0 or index > 10000:
+        print("wrong index range")
+        return
+
+    print("\n... Testing ...")
+    print("Test Image: %d" % index)
     model = vgg16.load_model()
-    summary(model, (3, 32, 32))
+    testloader = vgg16.get_loader()
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    
+    total = 0
+    correct = 0
+    with torch.no_grad():
+        test_iter = iter(testloader)
+        global images, labels
+        for i in range(index+1):
+            images, labels = test_iter.next()
+
+        images, labels = images.to(device), labels.to(device)
+        output = model(images)
+        m = nn.Softmax(dim=1)
+        output = m(output)
+        output = output.cpu().numpy()[0]
+
+        # Make a fake dataset:
+        y_pos = np.arange(len(classes))
+        
+        # Create bars
+        plt.bar(y_pos, output)
+        
+        # Create names on the x-axis
+        plt.xticks(y_pos, classes)
+        
+        # Show graphic
+        # plt.imshow(images.cpu()[0].permute(1, 2, 0))
+        plt.show()
+
+        fig1, ax1 = plt.subplots(figsize=(3,3), dpi=50)
+        ax1.imshow(images.cpu()[0].permute(1, 2, 0))
+        plt.show()

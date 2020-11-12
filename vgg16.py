@@ -3,10 +3,14 @@ import torch
 import torchvision
 import torchvision.transforms as transforms
 
-
+BATCH_SIZE = 4
+LR = 0.001
 classes = ('plane', 'car', 'bird', 'cat',
            'deer', 'dog', 'frog', 'horse', 'ship', 'truck')
 
+transform = transforms.Compose(
+    [transforms.ToTensor(),
+     transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -17,17 +21,8 @@ def imshow(img):
     npimg = img.numpy()
     plt.imshow(np.transpose(npimg, (1, 2, 0)))
 
-
-# # get some random training images
-# dataiter = iter(trainloader)
-# images, labels = dataiter.next()
-#
-#
-# # show images
-# imshow(torchvision.utils.make_grid(images))
-# # print labels
-# print(' '.join('%5s' % classes[labels[j]] for j in range(4)))
-
+def get_params():
+    return BATCH_SIZE, LR
 
 import torch
 import torch.nn as nn
@@ -83,18 +78,14 @@ class VGG(nn.Module):
 
 
 def run():
-    transform = transforms.Compose(
-    [transforms.ToTensor(),
-     transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
-
     trainset = torchvision.datasets.CIFAR10(root='./data', train=True,
                                             download=True, transform=transform)
-    trainloader = torch.utils.data.DataLoader(trainset, batch_size=4,
+    trainloader = torch.utils.data.DataLoader(trainset, batch_size=BATCH_SIZE,
                                             shuffle=True, num_workers=2)
 
     testset = torchvision.datasets.CIFAR10(root='./data', train=False,
                                         download=True, transform=transform)
-    testloader = torch.utils.data.DataLoader(testset, batch_size=4,
+    testloader = torch.utils.data.DataLoader(testset, batch_size=BATCH_SIZE,
                                             shuffle=False, num_workers=2)
     net = VGG()
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
@@ -104,7 +95,7 @@ def run():
     import torch.optim as optim
 
     criterion = nn.CrossEntropyLoss()
-    optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
+    optimizer = optim.SGD(net.parameters(), lr=LR, momentum=0.9)
 
     print('start traning.')
     train_len = len(trainloader)
@@ -170,22 +161,10 @@ def load_model():
     print(device)
     net.to(device)
     return net
-# class_correct = list(0. for i in range(10))
-# class_total = list(0. for i in range(10))
-# with torch.no_grad():
-#     for data in testloader:
-#         images, labels = data
-#         images, labels = images.to(device), labels.to(device)
-#         outputs = net(images)
-#         _, predicted = torch.max(outputs, 1)
-#         c = (predicted == labels).squeeze()
-#         for i in range(4):
-#             label = labels[i]
-#             class_correct[label] += c[i].item()
-#             class_total[label] += 1
 
-# for i in range(10):
-#     print('Accuracy of %5s : %2d %%' % (
-#         classes[i], 100 * class_correct[i] / class_total[i]))
-
-# # del dataiter
+def get_loader():
+    testset = torchvision.datasets.CIFAR10(root='./data', train=False,
+                    download=True, transform=transform)
+    testloader = torch.utils.data.DataLoader(testset, batch_size=1,
+                        shuffle=False, num_workers=2)
+    return testloader
