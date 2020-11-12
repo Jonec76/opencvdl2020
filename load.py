@@ -3,10 +3,9 @@ import torchvision
 import torchvision.transforms as transforms
 import torch.nn as nn
 import torch.nn.functional as F
-
 import torch.nn as nn
 import torch.nn.functional as F
-
+import matplotlib.pyplot as plt
 _cfg = {
     'VGG11': [64, 'M', 128, 'M', 256, 256, 'M', 512, 512, 'M', 512, 512, 'M'],
     'VGG13': [64, 64, 'M', 128, 128, 'M', 256, 256, 'M', 512, 512, 'M', 512, 512, 'M'],
@@ -63,3 +62,24 @@ def load_model():
     print(device)
     net.to(device)
     return net
+
+with open("train_acc.txt") as f:
+    train_acc = f.readlines()
+with open("test_acc.txt") as f:
+    test_acc = f.readlines()
+with open("train_loss.txt") as f:
+    loss = f.readlines()
+#
+# you may also want to remove whitespace characters like `\n` at the end of each line
+train_acc_list = [float(x.strip()) for x in train_acc] 
+test_acc_list = [float(x.strip()) for x in test_acc] 
+loss_list = [float(x.strip()) for x in loss] 
+x = range(20)
+plt.plot(x, loss_list, label='loss')
+# plt.plot(x, test_acc_list, label='test_acc')
+# plt.plot(x, y2, label='cos')
+# plt.text(0.08, 0.2, 'sin')
+# plt.text(0.9, 0.2, 'cos')
+plt.legend()
+plt.show()
+

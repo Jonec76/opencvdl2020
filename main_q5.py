@@ -47,13 +47,13 @@ class GroupBox(QWidget):
 		b1.clicked.connect(q5.show_train_image)
 		b2.clicked.connect(q5.show_params)
 		b3.clicked.connect(q5.show_model_structure)
-		# b4.clicked.connect(q5.show_accuracy)
+		b4.clicked.connect(q5.show_accuracy)
 		b5.clicked.connect(self.on_pushButton_clicked)
 
 		vbox.addWidget(b1)
 		vbox.addWidget(b2)
 		vbox.addWidget(b3)
-		# vbox.addWidget(b4)
+		vbox.addWidget(b4)
 		vbox.addWidget(b5)
 		return groupbox
 	def on_pushButton_clicked(self):

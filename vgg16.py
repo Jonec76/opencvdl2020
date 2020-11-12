@@ -5,6 +5,7 @@ import torchvision.transforms as transforms
 
 BATCH_SIZE = 4
 LR = 0.001
+EPOCH = 20
 classes = ('plane', 'car', 'bird', 'cat',
            'deer', 'dog', 'frog', 'horse', 'ship', 'truck')
 
@@ -76,7 +77,9 @@ class VGG(nn.Module):
         # y = self.fc3(y)
         return y
 
-
+train_acc = []
+test_acc = []
+train_loss = []
 def run():
     trainset = torchvision.datasets.CIFAR10(root='./data', train=True,
                                             download=True, transform=transform)
@@ -99,7 +102,7 @@ def run():
 
     print('start traning.')
     train_len = len(trainloader)
-    for epoch in range(2):  # loop over the dataset multiple times
+    for epoch in range(EPOCH):  # loop over the dataset multiple times
         running_loss = 0.0
         for i, data in enumerate(trainloader, 0):
             # get the inputs
@@ -135,8 +138,9 @@ def run():
 
         print('train: %d %%' % (
             100 * correct / total))
-
+        train_acc.append(correct / total)
         print("loss: %f", running_loss/train_len)
+        train_loss.append(running_loss/train_len)
         correct = 0
         total = 0
         with torch.no_grad():
@@ -150,8 +154,22 @@ def run():
 
         print('test: %d %%' % (
             100 * correct / total))
-
+        test_acc.append(correct / total)
     print('Finished Training')
+
+    with open('train_acc.txt', 'w') as f:
+        for item in train_acc:
+            f.write("%s\n" % item)
+
+    with open('test_acc.txt', 'w') as f:
+        for item in test_acc:
+            f.write("%s\n" % item)
+
+    with open('train_loss.txt', 'w') as f:
+        for item in train_loss:
+            f.write("%s\n" % item)
+
+    torch.save(net.state_dict(), 'VGG16.pt')
 
 
 def load_model():
@@ -168,3 +186,5 @@ def get_loader():
     testloader = torch.utils.data.DataLoader(testset, batch_size=1,
                         shuffle=False, num_workers=2)
     return testloader
+
+# run()

@@ -8,7 +8,7 @@ import vgg16
 from torchsummary import summary
 import torch
 import torchvision
-
+import matplotlib.image as mpimg
 
 classes = ['plane', 'car', 'bird', 'cat',
         'deer', 'dog', 'frog', 'horse', 'ship', 'truck']
@@ -115,3 +115,17 @@ def test_image(index):
         fig1, ax1 = plt.subplots(figsize=(3,3), dpi=50)
         ax1.imshow(images.cpu()[0].permute(1, 2, 0))
         plt.show()
+
+def show_accuracy():
+    acc = mpimg.imread('result/accuracy.png')
+    loss = mpimg.imread('result/loss.png')
+    fig, ax = plt.subplots()
+    imgplot = plt.imshow(acc)
+    ax.get_xaxis().set_ticks([])
+    ax.get_yaxis().set_ticks([])
+    plt.show()
+    fig1, ax1 = plt.subplots()
+    ax1.get_xaxis().set_ticks([])
+    ax1.get_yaxis().set_ticks([])
+    ax1.imshow(loss)
+    plt.show()
