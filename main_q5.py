@@ -3,11 +3,7 @@ from PyQt5 import QtCore
 import q5
 import sys
 
-class Test_box(QWidget):
-	"""
-	This "window" is a QWidget. If it has no parent, it 
-	will appear as a free-floating window as we want.
-	"""
+class test_dialogue(QWidget):
 	def __init__(self):
 		super().__init__()
 		layout = QVBoxLayout()
@@ -51,7 +47,7 @@ class GroupBox(QWidget):
 		b1.clicked.connect(q5.show_train_image)
 		b2.clicked.connect(q5.show_params)
 		b3.clicked.connect(q5.show_model_structure)
-		# b4.clicked.connect(q5.show_model_structure)
+		# b4.clicked.connect(q5.show_accuracy)
 		b5.clicked.connect(self.on_pushButton_clicked)
 
 		vbox.addWidget(b1)
@@ -61,7 +57,7 @@ class GroupBox(QWidget):
 		vbox.addWidget(b5)
 		return groupbox
 	def on_pushButton_clicked(self):
-		self.w = Test_box()
+		self.w = test_dialogue()
 		self.w.show()
 	
 
