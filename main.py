@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import *
 from PyQt5 import QtCore
-import q1, q2, q3, q4
+import q1
 import sys
 
 class GroupBox(QWidget):
@@ -14,10 +14,6 @@ class GroupBox(QWidget):
 		
 		total_widgets = []
 		total_widgets.append(self.c1("1. Image Processing"))
-		total_widgets.append(self.c2("2. Image Smoothing"))
-		total_widgets.append(self.c3("3. Edge Detection"))
-		total_widgets.append(self.c4("4. Transformation"))
-
 
 		for idx, widget in enumerate(total_widgets):
 			layout.addWidget(widget, 0, idx)
@@ -27,104 +23,22 @@ class GroupBox(QWidget):
 		vbox = QVBoxLayout()
 		groupbox.setLayout(vbox)
 
-		b1 = QPushButton("1.1 Load Image")
-		b2 = QPushButton("1.2 Color Seperation")
-		b3 = QPushButton("1.3 Image Flipping")
-		b4 = QPushButton("1.4 Blending")
-
-		b1.clicked.connect(q1.load_image)
-		b2.clicked.connect(q1.color_seperation)
-		b3.clicked.connect(q1.image_flipping)
-		b4.clicked.connect(q1.blending)
+		b1 = QPushButton("1.1 Load image")
+		b2 = QPushButton("1.2 Count coins")
+		x = 5
+		l1 = QLabel(self)
+		# l1.resize(200,100)
+		l1.setText("There are _ conis in coin01.jpg\nThere are _ conis in coin02.jpg")
+		b1.clicked.connect(q1.find_contour)
+		b2.clicked.connect(lambda y: q1.count_coins(l1))
 		
 		vbox.addWidget(b1)
 		vbox.addWidget(b2)
-		vbox.addWidget(b3)
-		vbox.addWidget(b4)
-		return groupbox
-
-	def c2(self, title):
-		groupbox = QGroupBox(title)
-		vbox = QVBoxLayout()
-		groupbox.setLayout(vbox)
-
-		b1 = QPushButton("2.1 Median Filter")
-		b2 = QPushButton("2.2 Gaussian Blur")
-		b3 = QPushButton("2.3 Bilateral Filter")
-		
-		b1.clicked.connect(q2.median_filter)
-		b2.clicked.connect(q2.gaussian_blur)
-		b3.clicked.connect(q2.bilateral_filter)
-
-		vbox.addWidget(b1)
-		vbox.addWidget(b2)
-		vbox.addWidget(b3)
-		return groupbox
-
-	def c3(self, title):
-		groupbox = QGroupBox(title)
-		vbox = QVBoxLayout()
-		groupbox.setLayout(vbox)
-
-		b1 = QPushButton("3.1 Gaussian Blur")
-		b2 = QPushButton("3.2 Sobel X")
-		b3 = QPushButton("3.3 Sobel Y")
-		b4 = QPushButton("3.4 Magnitude")
-
-		b1.clicked.connect(q3.gaussian_blur)
-		b2.clicked.connect(q3.sobel_x)
-		b3.clicked.connect(q3.sobel_y)
-		b4.clicked.connect(q3.magnitude)
-
-		vbox.addWidget(b1)
-		vbox.addWidget(b2)
-		vbox.addWidget(b3)
-		vbox.addWidget(b4)
-		return groupbox	
-
-	def c4(self, title):
-		groupbox = QGroupBox(title)
-		vbox = QVBoxLayout()
-		groupbox.setLayout(vbox)
-
-		E1 = QLineEdit()
-		E2 = QLineEdit()
-		E3 = QLineEdit()
-		E4 = QLineEdit()
-
-
-		r1 = self.get_c4_row("Rotation:", "deg", E1)
-		r2 = self.get_c4_row("Scaling: ", "", E2)
-		r3 = self.get_c4_row("Tx:      ", "pixel", E3)
-		r4 = self.get_c4_row("Ty:      ", "pixel", E4)
-
-		b1 = QPushButton("Transformation")
-
-		b1.clicked.connect(lambda: q4.transform(E1.text(), E2.text(), E3.text(), E4.text()))
-
-		vbox.addWidget(r1)
-		vbox.addWidget(r2)
-		vbox.addWidget(r3)
-		vbox.addWidget(r4)
-		vbox.addWidget(b1)
-		return groupbox
-		
-
-	def get_c4_row(self, t1, t2, E1):
-		groupbox = QGroupBox()
-		sub_layout = QGridLayout()
-		groupbox.setLayout(sub_layout)
-
-		L1 = QLabel(t1)
-		L2 = QLabel(t2)
-
-		E1.setFixedWidth(160)
-
-		sub_layout.addWidget(L1, 0, 0)
-		sub_layout.addWidget(E1, 0, 1)
-		sub_layout.addWidget(L2, 0, 2)
+		vbox.addWidget(l1)
 
 		return groupbox
+
+	
 
 app = QApplication(sys.argv)
 screen = GroupBox()
