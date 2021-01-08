@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import *
 from PyQt5 import QtCore
-import q1, q2
+import q1, q2, q3, q4
 import sys
 
 class GroupBox(QWidget):
@@ -15,6 +15,8 @@ class GroupBox(QWidget):
 		total_widgets = []
 		total_widgets.append(self.c1("1. Image Processing"))
 		total_widgets.append(self.c2("2. Calibration"))
+		total_widgets.append(self.c3("3. Augmented Reality"))
+		total_widgets.append(self.c4("4. Stereo Disparity Map"))
 
 		for idx, widget in enumerate(total_widgets):
 			layout.addWidget(widget, 0, idx)
@@ -73,7 +75,33 @@ class GroupBox(QWidget):
 
 
 		return groupbox
+	
+	def c3(self, title):
+		groupbox = QGroupBox(title)
+		vbox = QVBoxLayout()
+		groupbox.setLayout(vbox)
 
+		b1 = QPushButton("3.1 Augmented Reality")
+		
+		b1.clicked.connect(q3.augmented_reality)
+			
+		vbox.addWidget(b1)
+
+		return groupbox
+
+		
+	def c4(self, title):
+		groupbox = QGroupBox(title)
+		vbox = QVBoxLayout()
+		groupbox.setLayout(vbox)
+
+		b1 = QPushButton("4.1 Stereo Disparity Map")
+		
+		b1.clicked.connect(q4.stereo_disparity)
+			
+		vbox.addWidget(b1)
+
+		return groupbox
 	
 
 app = QApplication(sys.argv)

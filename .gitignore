@@ -1,5 +1,3 @@
-.vscode
-__pycache__
-*.pdf
-*.pptx
-/data
+/q5
+__pycache__/
+Datasets/
